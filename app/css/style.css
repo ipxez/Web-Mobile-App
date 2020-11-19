@@ -1,0 +1,97 @@
+*   {
+    margin: 0 auto;
+    padding: 0;
+}
+#header {
+    position: fixed;
+    display: flex;
+    top: 0;
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #000000;
+    z-index: 999;
+}
+.nav    {
+    display: flex;
+    width: 1200px;
+    height: 60px;
+    align-items: center;
+    flex-direction: row;
+}
+.nav .left   {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.left h1   {
+    margin: 1px;
+}
+.nav .right  {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.right button {
+    padding: 5px;
+    margin: 1px;
+}
+
+.main-content   {
+    margin-top: 60px;
+    width: 1200px;
+    overflow-x: hidden;
+}
+
+/* productRow aligns all products in a single line horizontally */
+.productRow	{
+    width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+/* productListed */
+.productListed	{
+    position: relative;
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    width: /*33.33333%*/ 29%;
+    padding: 5px;
+    margin-right: 15px; /* Leaves a gap to right of the product tab */
+    margin-left: 15px; /* Leaves a gap to the left of the product tab */
+}
+.productListed img	{
+    width: 100%;
+    max-height: 100%;
+    height: 70%; /* Keeps every image the same size! */
+}
+.productDesc	{
+    color: #000000; /* Sets The Default Colour For All Text In This Class */
+}
+.productPrice	{
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.productPrice h3	{
+    width: 100%;
+}
+.productPrice button 	{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    text-decoration: none;
+    color: #000000;
+    background-color: rgba(0,0,0,0);
+    border: 1px solid #000000;
+}
+.productPrice button:hover	{
+    -webkit-transition-duration: 1.3s; /* How long it takes for this style to load after hovering */
+    transition-duration: 1.3s;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
