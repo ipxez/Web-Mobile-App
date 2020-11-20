@@ -139,13 +139,53 @@
     cursor: pointer;
 }
 table#cartProducts  {
-    width: auto;
+    width: 100%;
     border: 1px solid #000000;
     float: left;
+}
+table#cartProducts td:nth-child(1)  {
+    width: 130px;
 }
 table#cartProducts td   {
     display: inline-flex;
     align-items: center;
     padding: 5px;
     width: 5rem;
+}
+.cart-grouping  {
+    display: flex;
+    width: 100%;
+}
+.cart-left  {
+    width: 30%;
+}
+.cart-right {
+    width: 70%;
+    margin-left: 20px;
+}
+.cart-right button  {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+    padding: 10px;
+    margin-left: 0;
+    text-decoration: none;
+    color: #000000;
+    background-color: rgba(0,0,0,0);
+    border: 1px solid #000000;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.cart-right button:hover    {
+    -webkit-transition-duration: 1.3s; /* How long it takes for this style to load after hovering */
+    transition-duration: 1.3s;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
+.cart-right button:disabled {
+    background-color: #ffffff;
+    color: #000000;
+    cursor: not-allowed;
 }

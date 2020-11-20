@@ -28,25 +28,17 @@
                 
                 <div v-if="showProducts">
                     <h2>Courses</h2>
-                    <!--<p>
+                    <p>
                         <strong>Filter Price:</strong>
-                        <select v-model="sortPrice">
+                        <select v-model="sortBy">
                             <option selected disabled value="">Price</option>
-                            <option>Highest - Lowest</option>
-                            <option>Lowest - Highest</option>
+                            <option value="highest">Highest - Lowest</option>
+                            <option value="lowest">Lowest - Highest</option>
                         </select>
                     </p>
-                    <p>
-                        <strong>Filter Location:
-                        <select v-model="filterLocation">
-                            <option selected disabled value="">Available</option>
-                            <option>Highest - Lowest</option>
-                            <option>Lowest - Highest</option>
-                        </select>
-                    </p>-->
 
                     <div class="productRow">
-                        <div v-for="lesson in product" class="productListed">
+                        <div v-for="lesson in sortedLessons" class="productListed">
                             <img v-bind:src="lesson.image">
 
                             <div class="productDetails">
@@ -86,9 +78,13 @@
                             <p></p>
                         </div>
                         <div class="cart-right">
-                            <input placeholder="name">
-                            <input placeholder="phone">
-                            <button @click='checkoutsubmit()'>Checkout</button>
+                            <form>
+                                <input placeholder="name" v-model="form.name">
+                                <input placeholder="phone" v-model.number="form.phone">
+                                <button @click='checkoutsubmit()' :disabled='!validForm'>Checkout</button>
+                                <p v-if="!nameValid">Name field invalid, only enter text</p>
+                                <p v-if="!phoneValid">Phone field invalid, only enter numbers</p>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -104,6 +100,11 @@
                     product: lesson,
                     cart: [],
                     showProducts: true,
+                    form: {
+                        name: null,
+                        phone: null
+                    },
+                    sortBy: 'Price'
                 },
                 methods:    {
                     // Adds lesson to cart and removes that lesson from its matching lesson ID
@@ -134,20 +135,40 @@
                             this.cart.pop(lesson);
                         }
                     },
-                    // Simmple alert pop-up for checking out products
+
+                    // Simmple alert pop-up for checking out products and refreshes the page once closed
                     checkoutsubmit()    {
-                        alert("Successfully Checked Out!");
+                        if (this.validForm)  {
+                            alert("Successfully Checked Out!");
+                            this.order.push(order.name && order.phone);
+                        }
                     },
                 },
                 computed:   {
-                    /*sortedLessons() {
-                        let sortPrice = this.sortPrice,
-                            filterLocation = this.filterLocation
-                        return this.product.filter(function(lesson) {
-                            let filtered = true
-                            if (sortPrice && )
+                    // Validation for name ensures it is only text
+                    nameValid() {
+                        return /^[A-Za-z]+$/.test(this.form.name);
+                    },
+                    // Validation for phone ensures only numbers can be entered
+                    phoneValid()    {
+                        return typeof this.form.phone == "number";
+                    },
+                    // Disables checkout button until validation passes
+                    validForm() {
+                        return this.nameValid && this.phoneValid;
+                    },
+                    // Sort products in order of price from highest to lowest using drop down menu
+                    // Hopefully this counts as ascending and descending order
+                    sortedLessons() {
+                         return this.product.sort((a, b) => {
+                            if (this.sortBy == 'highest') {
+                                return b.price - a.price
+                            }
+                            else if (this.sortBy == 'lowest') {
+                                return a.price - b.price
+                            }
                         })
-                    }*/
+                    }
                 }
             })
         </script>
