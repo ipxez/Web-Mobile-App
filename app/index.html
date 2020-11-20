@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Course Selector</title>
+        <title>Course Selector - eSchool</title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="js/lessons.js"></script>
@@ -16,37 +16,81 @@
             <header id="header">
                 <div class="nav">
                     <div class="left">
-                        <h1 v-text="sitename"></h1>
+                        <h1>eSchool</h1>
                     </div>
                     <div class="right">
-                        <button>Basket</button>
+                        <button @click='displayCheckout()' :hidden='isHidden(cart)'>{{this.cart.length}} Basket</button>
                     </div>
                 </div>
             </header>
 
             <div class="main-content">
+                
+                <div v-if="showProducts">
+                    <h2>Courses</h2>
+                    <!--<p>
+                        <strong>Filter Price:</strong>
+                        <select v-model="sortPrice">
+                            <option selected disabled value="">Price</option>
+                            <option>Highest - Lowest</option>
+                            <option>Lowest - Highest</option>
+                        </select>
+                    </p>
+                    <p>
+                        <strong>Filter Location:
+                        <select v-model="filterLocation">
+                            <option selected disabled value="">Available</option>
+                            <option>Highest - Lowest</option>
+                            <option>Lowest - Highest</option>
+                        </select>
+                    </p>-->
 
-                <div class="productRow">
-                    
+                    <div class="productRow">
                         <div v-for="lesson in product" class="productListed">
-
                             <img v-bind:src="lesson.image">
 
-                            <div class="productDesc">
-                                <h2 v-text="lesson.name"></h2>
+                            <div class="productDetails">
+                                <div class="productDesc">
+                                    <h3 v-text="lesson.name"></h3>
+                                    <h5 v-text="lesson.location"></h5>
+                                </div>
+                                
+                                <div class="productPrice">
+                                    <h4>£{{lesson.price}}</h4>
+                                    <button v-on:click='addToCart(lesson)' :disabled='isDisabled(lesson)'>Add To Cart</button>
+                                </div>
+                                <div class="productStock">
+                                    <p>Available stock: {{lesson.spaces}}</p>
+                                </div>
                             </div>
-                            
-                            <div class="productPrice">
-                                <h3 v-text="lesson.price"></h3>
-                                <button v-on:click='addToCart' >Add To Cart</button>
-                            </div>
-        
-                            
-        
-                            <p>Available stock: {{lesson.spaces}}</p>
-        
                         </div>
-                    
+                    </div>
+                </div>
+
+                <div v-else>
+                    <h2>Checkout</h2>
+
+                    <div class="cart-backbutton">
+                        <button @click='displayCheckout()'>Back to Courses</button>
+                    </div>
+
+                    <div class="cart-grouping">
+                        <div class="cart-left">
+                            <table id="cartProducts">
+                                <tr v-for="lesson in cart">
+                                    <td>{{lesson.name}}</td>
+                                    <td>£{{lesson.price}}</td>
+                                    <td><button @click='removeLesson(lesson)'>Remove</button></td>
+                                </tr>
+                            </table>
+                            <p></p>
+                        </div>
+                        <div class="cart-right">
+                            <input placeholder="name">
+                            <input placeholder="phone">
+                            <button @click='checkoutsubmit()'>Checkout</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -57,14 +101,53 @@
             var webstore = new Vue  ({
                 el: '#app',
                 data:   {
-                    sitename: 'eSchool',
                     product: lesson,
-                    cart: []
+                    cart: [],
+                    showProducts: true,
                 },
                 methods:    {
-                    addToCart: function()   {
-                        this.cart.push(this.product.id);
-                    }
+                    // Adds lesson to cart and removes that lesson from its matching lesson ID
+                    // Stops at 0
+                    addToCart(lesson)  {
+                        if (lesson.spaces > 0)    {
+                            lesson.spaces -= 1;
+                            this.cart.push(lesson);
+                        }
+                    },
+                    // Hides cart unless there are products in it (this was part of the criteria...)
+                    isHidden(cart) {
+                        return cart.length <= 0;
+                    },
+                    // Disables Add to Cart Button if stock is less than or equal to 0
+                    isDisabled(lesson)    {
+                        return lesson.spaces <= 0;
+                    },
+                    // Hides the showProducts section by setting its visibility to false
+                    // Reveals showProducts section if actioned again by setting visibility to true
+                    displayCheckout() {
+                        this.showProducts = this.showProducts ? false : true;
+                    },
+                    // Removes product from cart and adds it back to the stock of that product
+                    removeLesson(lesson)  {
+                        if (lesson.spaces < 5)  {
+                            lesson.spaces += 1;
+                            this.cart.pop(lesson);
+                        }
+                    },
+                    // Simmple alert pop-up for checking out products
+                    checkoutsubmit()    {
+                        alert("Successfully Checked Out!");
+                    },
+                },
+                computed:   {
+                    /*sortedLessons() {
+                        let sortPrice = this.sortPrice,
+                            filterLocation = this.filterLocation
+                        return this.product.filter(function(lesson) {
+                            let filtered = true
+                            if (sortPrice && )
+                        })
+                    }*/
                 }
             })
         </script>
